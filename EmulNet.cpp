@@ -85,7 +85,11 @@ void *EmulNet::ENinit(Address *myaddr, short port) {
  * size
  */
 int EmulNet::ENsend(Address *myaddr, Address *toaddr, char *data, int size) {
-	cout<<"Inside EEnSend\n";	
+	//cout<<"Inside EEnSend\n";	
+	//cout<<"Ensend : myaddr = "<<myaddr->getAddress()<<endl;
+	//cout<<"Ensend : toaddr = "<<toaddr->getAddress()<<endl;
+	//cout<<"Ensend : size of data = "<<sizeof(data)<<endl;
+	//cout<<"Ensend : size = "<<size<<endl;
 	en_msg *em;
 	static char temp[2048];
 	int sendmsg = rand() % 100;
@@ -105,18 +109,22 @@ int EmulNet::ENsend(Address *myaddr, Address *toaddr, char *data, int size) {
 	emulnet.buff[emulnet.currbuffsize++] = em;
 
 	int src = *(int *)(myaddr->addr);
+	//cout<<"Ensend : src = "<<src<<endl;
 	int time = par->getcurrtime();
 
 	assert(src <= MAX_NODES);
 	assert(time < MAX_TIME);
 
 	sent_msgs[src][time]++;
+	//cout<<"Ensend : before the log statement\n";
 
 	#ifdef DEBUGLOG
 		sprintf(temp, "Sending 4+%d B msg type %d to %d.%d.%d.%d:%d ", size-4, *(int *)data, toaddr->addr[0], toaddr->addr[1], toaddr->addr[2], toaddr->addr[3], *(short *)&toaddr->addr[4]);
         //log = new Log();
 		//log->LOG("ENsend: %d ",&(toaddr->addr) );
 	#endif
+
+	//cout<<"Ensend: after the log statement\n";
 
 	return size;
 }
