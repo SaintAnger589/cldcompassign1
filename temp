@@ -1,0 +1,1 @@
+g++ -c MP1Node.cpp -Wall -g -std=c++11
