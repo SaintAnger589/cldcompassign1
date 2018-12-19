@@ -32,7 +32,7 @@ enum MsgTypes{
     JOINREQ,
     JOINREP,
     DUMMYLASTMSGTYPE,
-    LISTCHANGE
+    RETIRENODE
 };
 
 /**
