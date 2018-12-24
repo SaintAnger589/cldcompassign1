@@ -1,1 +1,825 @@
-g++ -c MP1Node.cpp -Wall -g -std=c++11
+3-th introduced node is assigned with the address: 4:0
+2-th introduced node is assigned with the address: 3:0
+1-th introduced node is assigned with the address: 2:0
+0-th introduced node is assigned with the address: 1:0
+7-th introduced node is assigned with the address: 8:0
+6-th introduced node is assigned with the address: 7:0
+5-th introduced node is assigned with the address: 6:0
+4-th introduced node is assigned with the address: 5:0
+calling recvCallBack
+Inside checkMessages()
+msgType = 0
+JOINREQ : toNode membership list size = 0
+JOINREQ : toNode address = 1:0
+JOINREQ : heartbeat from message = 0
+JOINREQ : toNode->heartbeat = 1
+JOINREQ : fromNode->addr = 2:0
+JOINREQ : toNode->myPos->getid() = 2:0
+
+
+MP1Node : return from the Mp1node
+calling recvCallBack
+Inside checkMessages()
+msgType = 0
+JOINREQ : toNode membership list size = 1
+JOINREQ : toNode address = 1:0
+JOINREQ : heartbeat from message = 0
+JOINREQ : toNode->heartbeat = 2
+JOINREQ : fromNode->addr = 3:0
+JOINREQ : toNode->myPos->getid() = 2:0
+JOINREQ : toNode->myPos->getid() = 3:0
+
+
+MP1Node : return from the Mp1node
+calling recvCallBack
+Inside checkMessages()
+msgType = 0
+JOINREQ : toNode membership list size = 2
+JOINREQ : toNode address = 1:0
+JOINREQ : heartbeat from message = 0
+JOINREQ : toNode->heartbeat = 3
+JOINREQ : fromNode->addr = 4:0
+JOINREQ : toNode->myPos->getid() = 2:0
+JOINREQ : toNode->myPos->getid() = 3:0
+JOINREQ : toNode->myPos->getid() = 4:0
+
+
+MP1Node : return from the Mp1node
+9-th introduced node is assigned with the address: 10:0
+8-th introduced node is assigned with the address: 9:0
+calling recvCallBack
+Inside checkMessages()
+msgType = 1
+Inside JOINREP
+JOINREP : env address = 4:0
+JOINREP : Address = 1:0
+JoinREP : heartbeat = 3
+JoinRep : newlist->id = 3
+JoinRep : newlist->port = 0
+JoinRep : newlist->heartbeat = 0
+JoinRep : tonode->vector size = 1
+Size of the toNode->list = 1
+
+
+MP1Node : return from the Mp1node
+calling recvCallBack
+Inside checkMessages()
+msgType = 1
+Inside JOINREP
+JOINREP : env address = 4:0
+JOINREP : Address = 1:0
+JoinREP : heartbeat = 3
+JoinRep : newlist->id = 2
+JoinRep : newlist->port = 0
+JoinRep : newlist->heartbeat = 0
+JoinRep : tonode->vector size = 2
+Size of the toNode->list = 2
+
+
+MP1Node : return from the Mp1node
+calling recvCallBack
+Inside checkMessages()
+msgType = 1
+Inside JOINREP
+JOINREP : env address = 4:0
+JOINREP : Address = 1:0
+JoinREP : heartbeat = 3
+JoinRep : newlist->id = 4
+JoinRep : newlist->port = 0
+JoinRep : newlist->heartbeat = 0
+JoinRep : tonode->vector size = 3
+Size of the toNode->list = 3
+
+
+MP1Node : return from the Mp1node
+calling recvCallBack
+Inside checkMessages()
+msgType = 1
+Inside JOINREP
+JOINREP : env address = 3:0
+JOINREP : Address = 1:0
+JoinREP : heartbeat = 2
+JoinRep : newlist->id = 2
+JoinRep : newlist->port = 0
+JoinRep : newlist->heartbeat = 0
+JoinRep : tonode->vector size = 1
+Size of the toNode->list = 1
+
+
+MP1Node : return from the Mp1node
+calling recvCallBack
+Inside checkMessages()
+msgType = 1
+Inside JOINREP
+JOINREP : env address = 3:0
+JOINREP : Address = 1:0
+JoinREP : heartbeat = 2
+JoinRep : newlist->id = 3
+JoinRep : newlist->port = 0
+JoinRep : newlist->heartbeat = 0
+JoinRep : tonode->vector size = 2
+Size of the toNode->list = 2
+
+
+MP1Node : return from the Mp1node
+calling recvCallBack
+Inside checkMessages()
+msgType = 1
+Inside JOINREP
+JOINREP : env address = 2:0
+JOINREP : Address = 1:0
+JoinREP : heartbeat = 1
+JoinRep : newlist->id = 2
+JoinRep : newlist->port = 0
+JoinRep : newlist->heartbeat = 0
+JoinRep : tonode->vector size = 1
+Size of the toNode->list = 1
+
+
+MP1Node : return from the Mp1node
+calling recvCallBack
+Inside checkMessages()
+msgType = 0
+JOINREQ : toNode membership list size = 3
+JOINREQ : toNode address = 1:0
+JOINREQ : heartbeat from message = 0
+JOINREQ : toNode->heartbeat = 4
+JOINREQ : fromNode->addr = 5:0
+JOINREQ : toNode->myPos->getid() = 2:0
+JOINREQ : toNode->myPos->getid() = 3:0
+JOINREQ : toNode->myPos->getid() = 4:0
+JOINREQ : toNode->myPos->getid() = 5:0
+
+
+MP1Node : return from the Mp1node
+calling recvCallBack
+Inside checkMessages()
+msgType = 0
+JOINREQ : toNode membership list size = 4
+JOINREQ : toNode address = 1:0
+JOINREQ : heartbeat from message = 0
+JOINREQ : toNode->heartbeat = 5
+JOINREQ : fromNode->addr = 6:0
+JOINREQ : toNode->myPos->getid() = 2:0
+JOINREQ : toNode->myPos->getid() = 3:0
+JOINREQ : toNode->myPos->getid() = 4:0
+JOINREQ : toNode->myPos->getid() = 5:0
+JOINREQ : toNode->myPos->getid() = 6:0
+
+
+MP1Node : return from the Mp1node
+calling recvCallBack
+Inside checkMessages()
+msgType = 0
+JOINREQ : toNode membership list size = 5
+JOINREQ : toNode address = 1:0
+JOINREQ : heartbeat from message = 0
+JOINREQ : toNode->heartbeat = 6
+JOINREQ : fromNode->addr = 7:0
+JOINREQ : toNode->myPos->getid() = 2:0
+JOINREQ : toNode->myPos->getid() = 3:0
+JOINREQ : toNode->myPos->getid() = 4:0
+JOINREQ : toNode->myPos->getid() = 5:0
+JOINREQ : toNode->myPos->getid() = 6:0
+JOINREQ : toNode->myPos->getid() = 7:0
+
+
+MP1Node : return from the Mp1node
+calling recvCallBack
+Inside checkMessages()
+msgType = 0
+JOINREQ : toNode membership list size = 6
+JOINREQ : toNode address = 1:0
+JOINREQ : heartbeat from message = 0
+JOINREQ : toNode->heartbeat = 7
+JOINREQ : fromNode->addr = 8:0
+JOINREQ : toNode->myPos->getid() = 2:0
+JOINREQ : toNode->myPos->getid() = 3:0
+JOINREQ : toNode->myPos->getid() = 4:0
+JOINREQ : toNode->myPos->getid() = 5:0
+JOINREQ : toNode->myPos->getid() = 6:0
+JOINREQ : toNode->myPos->getid() = 7:0
+JOINREQ : toNode->myPos->getid() = 8:0
+
+
+MP1Node : return from the Mp1node
+calling recvCallBack
+Inside checkMessages()
+msgType = 1
+Inside JOINREP
+JOINREP : env address = 8:0
+JOINREP : Address = 1:0
+JoinREP : heartbeat = 7
+JoinRep : newlist->id = 2
+JoinRep : newlist->port = 0
+JoinRep : newlist->heartbeat = 0
+JoinRep : tonode->vector size = 1
+Size of the toNode->list = 1
+
+
+MP1Node : return from the Mp1node
+calling recvCallBack
+Inside checkMessages()
+msgType = 1
+Inside JOINREP
+JOINREP : env address = 8:0
+JOINREP : Address = 1:0
+JoinREP : heartbeat = 7
+JoinRep : newlist->id = 6
+JoinRep : newlist->port = 0
+JoinRep : newlist->heartbeat = 0
+JoinRep : tonode->vector size = 2
+Size of the toNode->list = 2
+
+
+MP1Node : return from the Mp1node
+calling recvCallBack
+Inside checkMessages()
+msgType = 1
+Inside JOINREP
+JOINREP : env address = 8:0
+JOINREP : Address = 1:0
+JoinREP : heartbeat = 7
+JoinRep : newlist->id = 5
+JoinRep : newlist->port = 0
+JoinRep : newlist->heartbeat = 0
+JoinRep : tonode->vector size = 3
+Size of the toNode->list = 3
+
+
+MP1Node : return from the Mp1node
+calling recvCallBack
+Inside checkMessages()
+msgType = 1
+Inside JOINREP
+JOINREP : env address = 8:0
+JOINREP : Address = 1:0
+JoinREP : heartbeat = 7
+JoinRep : newlist->id = 4
+JoinRep : newlist->port = 0
+JoinRep : newlist->heartbeat = 0
+JoinRep : tonode->vector size = 4
+Size of the toNode->list = 4
+
+
+MP1Node : return from the Mp1node
+calling recvCallBack
+Inside checkMessages()
+msgType = 1
+Inside JOINREP
+JOINREP : env address = 8:0
+JOINREP : Address = 1:0
+JoinREP : heartbeat = 7
+JoinRep : newlist->id = 3
+JoinRep : newlist->port = 0
+JoinRep : newlist->heartbeat = 0
+JoinRep : tonode->vector size = 5
+Size of the toNode->list = 5
+
+
+MP1Node : return from the Mp1node
+calling recvCallBack
+Inside checkMessages()
+msgType = 1
+Inside JOINREP
+JOINREP : env address = 8:0
+JOINREP : Address = 1:0
+JoinREP : heartbeat = 7
+JoinRep : newlist->id = 8
+JoinRep : newlist->port = 0
+JoinRep : newlist->heartbeat = 0
+JoinRep : tonode->vector size = 6
+Size of the toNode->list = 6
+
+
+MP1Node : return from the Mp1node
+calling recvCallBack
+Inside checkMessages()
+msgType = 1
+Inside JOINREP
+JOINREP : env address = 8:0
+JOINREP : Address = 1:0
+JoinREP : heartbeat = 7
+JoinRep : newlist->id = 7
+JoinRep : newlist->port = 0
+JoinRep : newlist->heartbeat = 0
+JoinRep : tonode->vector size = 7
+Size of the toNode->list = 7
+
+
+MP1Node : return from the Mp1node
+calling recvCallBack
+Inside checkMessages()
+msgType = 1
+Inside JOINREP
+JOINREP : env address = 7:0
+JOINREP : Address = 1:0
+JoinREP : heartbeat = 6
+JoinRep : newlist->id = 3
+JoinRep : newlist->port = 0
+JoinRep : newlist->heartbeat = 0
+JoinRep : tonode->vector size = 1
+Size of the toNode->list = 1
+
+
+MP1Node : return from the Mp1node
+calling recvCallBack
+Inside checkMessages()
+msgType = 1
+Inside JOINREP
+JOINREP : env address = 7:0
+JOINREP : Address = 1:0
+JoinREP : heartbeat = 6
+JoinRep : newlist->id = 2
+JoinRep : newlist->port = 0
+JoinRep : newlist->heartbeat = 0
+JoinRep : tonode->vector size = 2
+Size of the toNode->list = 2
+
+
+MP1Node : return from the Mp1node
+calling recvCallBack
+Inside checkMessages()
+msgType = 1
+Inside JOINREP
+JOINREP : env address = 7:0
+JOINREP : Address = 1:0
+JoinREP : heartbeat = 6
+JoinRep : newlist->id = 7
+JoinRep : newlist->port = 0
+JoinRep : newlist->heartbeat = 0
+JoinRep : tonode->vector size = 3
+Size of the toNode->list = 3
+
+
+MP1Node : return from the Mp1node
+calling recvCallBack
+Inside checkMessages()
+msgType = 1
+Inside JOINREP
+JOINREP : env address = 7:0
+JOINREP : Address = 1:0
+JoinREP : heartbeat = 6
+JoinRep : newlist->id = 6
+JoinRep : newlist->port = 0
+JoinRep : newlist->heartbeat = 0
+JoinRep : tonode->vector size = 4
+Size of the toNode->list = 4
+
+
+MP1Node : return from the Mp1node
+calling recvCallBack
+Inside checkMessages()
+msgType = 1
+Inside JOINREP
+JOINREP : env address = 7:0
+JOINREP : Address = 1:0
+JoinREP : heartbeat = 6
+JoinRep : newlist->id = 5
+JoinRep : newlist->port = 0
+JoinRep : newlist->heartbeat = 0
+JoinRep : tonode->vector size = 5
+Size of the toNode->list = 5
+
+
+MP1Node : return from the Mp1node
+calling recvCallBack
+Inside checkMessages()
+msgType = 1
+Inside JOINREP
+JOINREP : env address = 7:0
+JOINREP : Address = 1:0
+JoinREP : heartbeat = 6
+JoinRep : newlist->id = 4
+JoinRep : newlist->port = 0
+JoinRep : newlist->heartbeat = 0
+JoinRep : tonode->vector size = 6
+Size of the toNode->list = 6
+
+
+MP1Node : return from the Mp1node
+calling recvCallBack
+Inside checkMessages()
+msgType = 1
+Inside JOINREP
+JOINREP : env address = 6:0
+JOINREP : Address = 1:0
+JoinREP : heartbeat = 5
+JoinRep : newlist->id = 6
+JoinRep : newlist->port = 0
+JoinRep : newlist->heartbeat = 0
+JoinRep : tonode->vector size = 1
+Size of the toNode->list = 1
+
+
+MP1Node : return from the Mp1node
+calling recvCallBack
+Inside checkMessages()
+msgType = 1
+Inside JOINREP
+JOINREP : env address = 6:0
+JOINREP : Address = 1:0
+JoinREP : heartbeat = 5
+JoinRep : newlist->id = 5
+JoinRep : newlist->port = 0
+JoinRep : newlist->heartbeat = 0
+JoinRep : tonode->vector size = 2
+Size of the toNode->list = 2
+
+
+MP1Node : return from the Mp1node
+calling recvCallBack
+Inside checkMessages()
+msgType = 1
+Inside JOINREP
+JOINREP : env address = 6:0
+JOINREP : Address = 1:0
+JoinREP : heartbeat = 5
+JoinRep : newlist->id = 4
+JoinRep : newlist->port = 0
+JoinRep : newlist->heartbeat = 0
+JoinRep : tonode->vector size = 3
+Size of the toNode->list = 3
+
+
+MP1Node : return from the Mp1node
+calling recvCallBack
+Inside checkMessages()
+msgType = 1
+Inside JOINREP
+JOINREP : env address = 6:0
+JOINREP : Address = 1:0
+JoinREP : heartbeat = 5
+JoinRep : newlist->id = 3
+JoinRep : newlist->port = 0
+JoinRep : newlist->heartbeat = 0
+JoinRep : tonode->vector size = 4
+Size of the toNode->list = 4
+
+
+MP1Node : return from the Mp1node
+calling recvCallBack
+Inside checkMessages()
+msgType = 1
+Inside JOINREP
+JOINREP : env address = 6:0
+JOINREP : Address = 1:0
+JoinREP : heartbeat = 5
+JoinRep : newlist->id = 2
+JoinRep : newlist->port = 0
+JoinRep : newlist->heartbeat = 0
+JoinRep : tonode->vector size = 5
+Size of the toNode->list = 5
+
+
+MP1Node : return from the Mp1node
+calling recvCallBack
+Inside checkMessages()
+msgType = 1
+Inside JOINREP
+JOINREP : env address = 5:0
+JOINREP : Address = 1:0
+JoinREP : heartbeat = 4
+JoinRep : newlist->id = 5
+JoinRep : newlist->port = 0
+JoinRep : newlist->heartbeat = 0
+JoinRep : tonode->vector size = 1
+Size of the toNode->list = 1
+
+
+MP1Node : return from the Mp1node
+calling recvCallBack
+Inside checkMessages()
+msgType = 1
+Inside JOINREP
+JOINREP : env address = 5:0
+JOINREP : Address = 1:0
+JoinREP : heartbeat = 4
+JoinRep : newlist->id = 4
+JoinRep : newlist->port = 0
+JoinRep : newlist->heartbeat = 0
+JoinRep : tonode->vector size = 2
+Size of the toNode->list = 2
+
+
+MP1Node : return from the Mp1node
+calling recvCallBack
+Inside checkMessages()
+msgType = 1
+Inside JOINREP
+JOINREP : env address = 5:0
+JOINREP : Address = 1:0
+JoinREP : heartbeat = 4
+JoinRep : newlist->id = 3
+JoinRep : newlist->port = 0
+JoinRep : newlist->heartbeat = 0
+JoinRep : tonode->vector size = 3
+Size of the toNode->list = 3
+
+
+MP1Node : return from the Mp1node
+calling recvCallBack
+Inside checkMessages()
+msgType = 1
+Inside JOINREP
+JOINREP : env address = 5:0
+JOINREP : Address = 1:0
+JoinREP : heartbeat = 4
+JoinRep : newlist->id = 2
+JoinRep : newlist->port = 0
+JoinRep : newlist->heartbeat = 0
+JoinRep : tonode->vector size = 4
+Size of the toNode->list = 4
+
+
+MP1Node : return from the Mp1node
+calling recvCallBack
+Inside checkMessages()
+msgType = 0
+JOINREQ : toNode membership list size = 7
+JOINREQ : toNode address = 1:0
+JOINREQ : heartbeat from message = 0
+JOINREQ : toNode->heartbeat = 8
+JOINREQ : fromNode->addr = 9:0
+JOINREQ : toNode->myPos->getid() = 2:0
+JOINREQ : toNode->myPos->getid() = 3:0
+JOINREQ : toNode->myPos->getid() = 4:0
+JOINREQ : toNode->myPos->getid() = 5:0
+JOINREQ : toNode->myPos->getid() = 6:0
+JOINREQ : toNode->myPos->getid() = 7:0
+JOINREQ : toNode->myPos->getid() = 8:0
+JOINREQ : toNode->myPos->getid() = 9:0
+
+
+MP1Node : return from the Mp1node
+calling recvCallBack
+Inside checkMessages()
+msgType = 0
+JOINREQ : toNode membership list size = 8
+JOINREQ : toNode address = 1:0
+JOINREQ : heartbeat from message = 0
+JOINREQ : toNode->heartbeat = 9
+JOINREQ : fromNode->addr = 10:0
+JOINREQ : toNode->myPos->getid() = 2:0
+JOINREQ : toNode->myPos->getid() = 3:0
+JOINREQ : toNode->myPos->getid() = 4:0
+JOINREQ : toNode->myPos->getid() = 5:0
+JOINREQ : toNode->myPos->getid() = 6:0
+JOINREQ : toNode->myPos->getid() = 7:0
+JOINREQ : toNode->myPos->getid() = 8:0
+JOINREQ : toNode->myPos->getid() = 9:0
+JOINREQ : toNode->myPos->getid() = 10:0
+
+
+MP1Node : return from the Mp1node
+calling recvCallBack
+Inside checkMessages()
+msgType = 1
+Inside JOINREP
+JOINREP : env address = 10:0
+JOINREP : Address = 1:0
+JoinREP : heartbeat = 9
+JoinRep : newlist->id = 2
+JoinRep : newlist->port = 0
+JoinRep : newlist->heartbeat = 0
+JoinRep : tonode->vector size = 1
+Size of the toNode->list = 1
+
+
+MP1Node : return from the Mp1node
+calling recvCallBack
+Inside checkMessages()
+msgType = 1
+Inside JOINREP
+JOINREP : env address = 10:0
+JOINREP : Address = 1:0
+JoinREP : heartbeat = 9
+JoinRep : newlist->id = 10
+JoinRep : newlist->port = 0
+JoinRep : newlist->heartbeat = 0
+JoinRep : tonode->vector size = 2
+Size of the toNode->list = 2
+
+
+MP1Node : return from the Mp1node
+calling recvCallBack
+Inside checkMessages()
+msgType = 1
+Inside JOINREP
+JOINREP : env address = 10:0
+JOINREP : Address = 1:0
+JoinREP : heartbeat = 9
+JoinRep : newlist->id = 9
+JoinRep : newlist->port = 0
+JoinRep : newlist->heartbeat = 0
+JoinRep : tonode->vector size = 3
+Size of the toNode->list = 3
+
+
+MP1Node : return from the Mp1node
+calling recvCallBack
+Inside checkMessages()
+msgType = 1
+Inside JOINREP
+JOINREP : env address = 10:0
+JOINREP : Address = 1:0
+JoinREP : heartbeat = 9
+JoinRep : newlist->id = 8
+JoinRep : newlist->port = 0
+JoinRep : newlist->heartbeat = 0
+JoinRep : tonode->vector size = 4
+Size of the toNode->list = 4
+
+
+MP1Node : return from the Mp1node
+calling recvCallBack
+Inside checkMessages()
+msgType = 1
+Inside JOINREP
+JOINREP : env address = 10:0
+JOINREP : Address = 1:0
+JoinREP : heartbeat = 9
+JoinRep : newlist->id = 7
+JoinRep : newlist->port = 0
+JoinRep : newlist->heartbeat = 0
+JoinRep : tonode->vector size = 5
+Size of the toNode->list = 5
+
+
+MP1Node : return from the Mp1node
+calling recvCallBack
+Inside checkMessages()
+msgType = 1
+Inside JOINREP
+JOINREP : env address = 10:0
+JOINREP : Address = 1:0
+JoinREP : heartbeat = 9
+JoinRep : newlist->id = 6
+JoinRep : newlist->port = 0
+JoinRep : newlist->heartbeat = 0
+JoinRep : tonode->vector size = 6
+Size of the toNode->list = 6
+
+
+MP1Node : return from the Mp1node
+calling recvCallBack
+Inside checkMessages()
+msgType = 1
+Inside JOINREP
+JOINREP : env address = 10:0
+JOINREP : Address = 1:0
+JoinREP : heartbeat = 9
+JoinRep : newlist->id = 5
+JoinRep : newlist->port = 0
+JoinRep : newlist->heartbeat = 0
+JoinRep : tonode->vector size = 7
+Size of the toNode->list = 7
+
+
+MP1Node : return from the Mp1node
+calling recvCallBack
+Inside checkMessages()
+msgType = 1
+Inside JOINREP
+JOINREP : env address = 10:0
+JOINREP : Address = 1:0
+JoinREP : heartbeat = 9
+JoinRep : newlist->id = 4
+JoinRep : newlist->port = 0
+JoinRep : newlist->heartbeat = 0
+JoinRep : tonode->vector size = 8
+Size of the toNode->list = 8
+
+
+MP1Node : return from the Mp1node
+calling recvCallBack
+Inside checkMessages()
+msgType = 1
+Inside JOINREP
+JOINREP : env address = 10:0
+JOINREP : Address = 1:0
+JoinREP : heartbeat = 9
+JoinRep : newlist->id = 3
+JoinRep : newlist->port = 0
+JoinRep : newlist->heartbeat = 0
+JoinRep : tonode->vector size = 9
+Size of the toNode->list = 9
+
+
+MP1Node : return from the Mp1node
+calling recvCallBack
+Inside checkMessages()
+msgType = 1
+Inside JOINREP
+JOINREP : env address = 9:0
+JOINREP : Address = 1:0
+JoinREP : heartbeat = 8
+JoinRep : newlist->id = 9
+JoinRep : newlist->port = 0
+JoinRep : newlist->heartbeat = 0
+JoinRep : tonode->vector size = 1
+Size of the toNode->list = 1
+
+
+MP1Node : return from the Mp1node
+calling recvCallBack
+Inside checkMessages()
+msgType = 1
+Inside JOINREP
+JOINREP : env address = 9:0
+JOINREP : Address = 1:0
+JoinREP : heartbeat = 8
+JoinRep : newlist->id = 8
+JoinRep : newlist->port = 0
+JoinRep : newlist->heartbeat = 0
+JoinRep : tonode->vector size = 2
+Size of the toNode->list = 2
+
+
+MP1Node : return from the Mp1node
+calling recvCallBack
+Inside checkMessages()
+msgType = 1
+Inside JOINREP
+JOINREP : env address = 9:0
+JOINREP : Address = 1:0
+JoinREP : heartbeat = 8
+JoinRep : newlist->id = 7
+JoinRep : newlist->port = 0
+JoinRep : newlist->heartbeat = 0
+JoinRep : tonode->vector size = 3
+Size of the toNode->list = 3
+
+
+MP1Node : return from the Mp1node
+calling recvCallBack
+Inside checkMessages()
+msgType = 1
+Inside JOINREP
+JOINREP : env address = 9:0
+JOINREP : Address = 1:0
+JoinREP : heartbeat = 8
+JoinRep : newlist->id = 6
+JoinRep : newlist->port = 0
+JoinRep : newlist->heartbeat = 0
+JoinRep : tonode->vector size = 4
+Size of the toNode->list = 4
+
+
+MP1Node : return from the Mp1node
+calling recvCallBack
+Inside checkMessages()
+msgType = 1
+Inside JOINREP
+JOINREP : env address = 9:0
+JOINREP : Address = 1:0
+JoinREP : heartbeat = 8
+JoinRep : newlist->id = 5
+JoinRep : newlist->port = 0
+JoinRep : newlist->heartbeat = 0
+JoinRep : tonode->vector size = 5
+Size of the toNode->list = 5
+
+
+MP1Node : return from the Mp1node
+calling recvCallBack
+Inside checkMessages()
+msgType = 1
+Inside JOINREP
+JOINREP : env address = 9:0
+JOINREP : Address = 1:0
+JoinREP : heartbeat = 8
+JoinRep : newlist->id = 4
+JoinRep : newlist->port = 0
+JoinRep : newlist->heartbeat = 0
+JoinRep : tonode->vector size = 6
+Size of the toNode->list = 6
+
+
+MP1Node : return from the Mp1node
+calling recvCallBack
+Inside checkMessages()
+msgType = 1
+Inside JOINREP
+JOINREP : env address = 9:0
+JOINREP : Address = 1:0
+JoinREP : heartbeat = 8
+JoinRep : newlist->id = 3
+JoinRep : newlist->port = 0
+JoinRep : newlist->heartbeat = 0
+JoinRep : tonode->vector size = 7
+Size of the toNode->list = 7
+
+
+MP1Node : return from the Mp1node
+calling recvCallBack
+Inside checkMessages()
+msgType = 1
+Inside JOINREP
+JOINREP : env address = 9:0
+JOINREP : Address = 1:0
+JoinREP : heartbeat = 8
+JoinRep : newlist->id = 2
+JoinRep : newlist->port = 0
+JoinRep : newlist->heartbeat = 0
+JoinRep : tonode->vector size = 8
