@@ -77,6 +77,7 @@ public:
 	void initMemberListTable(Member *memberNode);
 	void printAddress(Address *addr);
 	void send_heartbeat();
+	Address getNodeAddress(int id, short port);
 	virtual ~MP1Node();
 };
 

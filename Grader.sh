@@ -38,6 +38,7 @@ else
 	./Application testcases/singlefailure.conf
 fi
 joincount=`grep joined dbg.log | cut -d" " -f2,4-7 | sort -u | wc -l`
+echo "joincount = $joincount"
 if [ $joincount -eq 100 ]; then
 	grade=`expr $grade + 10`
 	echo "Checking Join..................10/10"
@@ -47,6 +48,7 @@ else
 	for i in $joinfrom
 	do
 		jointo=`grep joined dbg.log | grep '^ '$i | cut -d" " -f4-7 | grep -v $i | sort -u | wc -l`
+		echo "jointo = $jointo"
 		if [ $jointo -eq 9 ]; then
 			cnt=`expr $cnt + 1`
 		fi
@@ -127,7 +129,10 @@ failednode=`grep "Node failed at time" dbg.log | sort -u | awk '{print $1}'`
 tmp=0
 for i in $failednode
 do
+	accuracycount=`grep removed dbg.log | sort -u | grep -v $i`
+	echo "accuracycount : $accuracycount"
 	accuracycount=`grep removed dbg.log | sort -u | grep -v $i | wc -l`
+	echo "accuracycount : $accuracycount"
 	if [ $accuracycount -eq 20 ]; then
 		tmp=`expr $tmp + 2`
 		grade=`expr $grade + 2`

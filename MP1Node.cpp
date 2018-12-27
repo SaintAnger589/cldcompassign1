@@ -182,13 +182,14 @@ void MP1Node::nodeLoop() {
     //cout<<"Starting checkMessages()\n";
     checkMessages();
 
-    //send heartbeat
-    //send_heartbeat();
-
     // Wait until you're in the group...
     if( !memberNode->inGroup ) {
         return;
     }
+
+    //send heartbeat
+    if (!memberNode->bFailed && memberNode->inGroup)
+    send_heartbeat();
 
     // ...then jump in and share your responsibilites!
     nodeLoopOps();
@@ -206,34 +207,62 @@ void MP1Node::nodeLoop() {
 void MP1Node::send_heartbeat(){
     int id;
     short port;
-    memberNode->pingCounter = memberNode->pingCounter + 1;
+    memberNode->heartbeat = memberNode->heartbeat + 1;
+
+    //memberNode->settimestamp(par->getcurrtime());
+    cout<<"HBEAT: ";
+    printAddress(&memberNode->addr);
+    cout<<"HBEAT: hearbeat = "<<memberNode->heartbeat<<"\n";
     //if (memberNode->pingCounter == 2)
     int vsize = memberNode->memberList.size();
     cout<<"send_heartbeat : vsize = "<<vsize<<endl;
-    for(memberNode->myPos = memberNode->memberList.begin(); memberNode->myPos != memberNode->memberList.end(); memberNode->myPos++){
-
-    }
-
-    MessageHdr *dummymsg;
-    size_t dummysize =  sizeof(MessageHdr) + sizeof(memberNode->addr.addr) + sizeof(long) + sizeof(memberNode->memberList[0]);
-    dummymsg = (MessageHdr *)malloc(dummysize * sizeof(char));
-    dummymsg->msgType = DUMMYLASTMSGTYPE;
-    memcpy((char *)(dummymsg + 1), &memberNode->addr.addr, sizeof(memberNode->addr.addr));
-    memcpy((char *)(dummymsg + 1) + 1 + sizeof(memberNode->addr.addr), &memberNode->heartbeat, sizeof(long));
-    memcpy((char *)(dummymsg + 1) + sizeof(memberNode->addr.addr) + 1 + sizeof(long), &memberNode->myPos, sizeof(memberNode->memberList[0]));
-
-    for(int i=0;i<(vsize / 2); i++){
-        int ran_var = rand() % vsize;
+    for(int i=0;i<(vsize); i++){
+        //int ran_var = rand() % vsize;
+        //cout<<"HBEAT : ran_var = "<<ran_var<<endl;
         //creating address from the membership list entry of ran_var
-        id = memberNode->memberList[ran_var].id;
-        port = memberNode->memberList[ran_var].port;
-        Address *newaddr;
-        newaddr->addr[0] = id;
-        newaddr->addr[4] = port;
-        cout<<"send_heartbeat : new address = "<<newaddr->getAddress();
-        emulNet->ENsend(newaddr,&memberNode->addr, (char *)dummymsg, dummysize);        
-    }
+        //sending to random
+        //id = memberNode->memberList[ran_var].id;
+        //port = memberNode->memberList[ran_var].port;
+        //sending to all
+        id = memberNode->memberList[i].id;
+        port = memberNode->memberList[i].port;
+        if (id == (int)memberNode->addr.addr[0] && port == (short)memberNode->addr.addr[4]){
+            cout<<"HBEAT : updating memberList heartbeat addr=";
+            printAddress(&memberNode->addr);
+            //memberNode->memberList[ran_var].heartbeat = memberNode->heartbeat; 
+            //memberNode->memberList[ran_var].timestamp = par->getcurrtime();
 
+            memberNode->memberList[i].heartbeat = memberNode->heartbeat; 
+            memberNode->memberList[i].timestamp = par->getcurrtime();
+        } else {
+            for(memberNode->myPos = memberNode->memberList.begin(); memberNode->myPos != memberNode->memberList.end(); memberNode->myPos++){
+                //cout<<"HBEAT : starting loop\n";
+                MessageHdr *dummymsg = new MessageHdr;
+                size_t dummysize =  sizeof(MessageHdr) + sizeof(memberNode->addr.addr) + 1 + sizeof(long) + sizeof(int) + sizeof(short) + sizeof(long) + sizeof(long);
+                //cout<<"HBEAT : dummysize = "<<dummysize<<"\n";
+                dummymsg = (MessageHdr *)malloc(dummysize * sizeof(char));
+                dummymsg->msgType = DUMMYLASTMSGTYPE;
+                //cout<<"HBEAT : dummysize = "<<dummysize<<"\n";
+                memcpy((char *)(dummymsg + 1), &memberNode->addr.addr, sizeof(memberNode->addr.addr));
+                memcpy((char *)(dummymsg + 1) + 1 + sizeof(memberNode->addr.addr), &memberNode->heartbeat, sizeof(long));
+                memcpy((char *)(dummymsg + 1) + sizeof(memberNode->addr.addr) + 1 + sizeof(long), &(memberNode->myPos->id), sizeof(int));
+                memcpy((char *)(dummymsg + 1) + sizeof(memberNode->addr.addr) + 1 + sizeof(long) + sizeof(int), &(memberNode->myPos->port), sizeof(short));
+                memcpy((char *)(dummymsg + 1) + sizeof(memberNode->addr.addr) + 1 + sizeof(long) + sizeof(int) + sizeof(short), &(memberNode->myPos->heartbeat), sizeof(long));
+                memcpy((char *)(dummymsg + 1) + sizeof(memberNode->addr.addr) + 1 + sizeof(long) + sizeof(int) + sizeof(short) + sizeof(long), &(memberNode->myPos->id), sizeof(long));\
+                //cout<<"Selecting addresses at random\n";
+                //cout<<"HBEAT : id = "<<id<<endl;
+                //cout<<"HBEAT : port = "<<port<<endl;
+                Address *newaddr = new Address;
+                memcpy(&newaddr->addr[0], &id, sizeof(int));
+                memcpy(&newaddr->addr[4], &port, sizeof(short));
+                cout<<"HBEAT : from addr = ";
+                printAddress(&memberNode->addr);
+                cout<<"HBEAT : to address = ";
+                printAddress(newaddr);
+                emulNet->ENsend(&memberNode->addr, newaddr, (char *)dummymsg, dummysize);        
+            }
+        }
+    }
 }
 /**
  * FUNCTION NAME: checkMessages
@@ -267,8 +296,8 @@ bool MP1Node::recvCallBack(void *env, char *data, int size ) {
      */
 
 
-    Member *toNode;
-    Member *fromNode;
+    Member *toNode = new Member;
+    Member *fromNode = new Member;
 
     toNode = (Member *)env;
 
@@ -281,7 +310,7 @@ bool MP1Node::recvCallBack(void *env, char *data, int size ) {
     char addr[6];
     Address tempaddr;
 
-    MessageHdr *msg;
+    MessageHdr *msg = new MessageHdr;
     int id;
     short port;
     long heartbeat;
@@ -295,13 +324,16 @@ bool MP1Node::recvCallBack(void *env, char *data, int size ) {
     //memcpy(&msg->msgType, data, sizeof(MessageHdr));
     if (msg->msgType == JOINREQ){
         //toNode   = (Member *)env;
-        cout<<"JOINREQ : toNode membership list size = "<<toNode->memberList.size()<<"\n";
+        //cout<<"JOINREQ : toNode membership list size = "<<toNode->memberList.size()<<"\n";
         cout<<"JOINREQ : toNode address = "<<toNode->addr.getAddress()<<"\n";
 
         memcpy(&id, data + sizeof(MessageHdr), sizeof(int));
         memcpy(&port, data + sizeof(MessageHdr) + sizeof(int), sizeof(short));
         memcpy(&tempaddr.addr, data + sizeof(MessageHdr), sizeof(tempaddr.addr));
         memcpy(&heartbeat, (data) + sizeof(MessageHdr) + 1 + sizeof(toNode->addr.addr), sizeof(long)); //1:0 heartbeat
+
+        //INCREASING toNode timestamp
+        //toNode->settimestamp(par->getcurrtime());
         //cout<<"data ...id   = "<<id<<"\n";
         //cout<<"data ...port = "<<port<<"\n";
         //cout<<"data ...size..id = "<<sizeof(id)<<"\n";
@@ -326,6 +358,8 @@ bool MP1Node::recvCallBack(void *env, char *data, int size ) {
         //stting membership list
         //cout<<"setting membershipList\n";
         toNode->memberList.push_back(*temp);
+        log->logNodeAdd((Address *)(&toNode->addr), (Address *)(&tempaddr));
+
         //cout<<"membershipList Entered\n";
 
         //incrementing heartbeat of toNode
@@ -333,6 +367,7 @@ bool MP1Node::recvCallBack(void *env, char *data, int size ) {
         cout<<"JOINREQ : heartbeat from message = "<<heartbeat<<endl;
         cout<<"JOINREQ : toNode->heartbeat = "<<toNode->heartbeat<<endl;
         //toNode->settimestamp(par->getcurrtime());
+
 
         //for(toNode->myPos = toNode->memberList.begin(); toNode->myPos != toNode->memberList.end(); toNode->myPos++)
         //    cout<<"Membership Id ="<<toNode->myPos->id<<"\n";
@@ -386,6 +421,7 @@ bool MP1Node::recvCallBack(void *env, char *data, int size ) {
         cout<<"Inside JOINREP\n";
         
         //toNode = (Member *)env; //2:0
+
         int size_of_vector;
         cout<<"JOINREP : env address = "<<toNode->addr.getAddress()<<endl;
 
@@ -396,13 +432,10 @@ bool MP1Node::recvCallBack(void *env, char *data, int size ) {
 
         memcpy(&heartbeat, data + sizeof(MessageHdr) + sizeof(tempaddr.addr) + 1, sizeof(long)); //1:0 heartbeat
 
-        //cout<<"JOINREP : id = "<<id<<endl; ///1:0
-        //cout<<"JOINREP : port = "<<port<<"\n";
         cout<<"JOINREP : Address = "<<tempaddr.getAddress()<<"\n";
         cout<<"JoinREP : heartbeat = "<<heartbeat<<"\n";
+        
 
-        //starting up the node
-        //cout<<"toNode node init\n"; //2:0
         ///////////////////////////////////
         toNode->inited   = true;
         //cout<<"check2\n";
@@ -435,118 +468,136 @@ bool MP1Node::recvCallBack(void *env, char *data, int size ) {
 
         //if (tempaddr->addr == newlist)
         toNode->memberList.push_back(*newlist);
-
-        cout<<"JoinRep : tonode->vector size = "<<toNode->memberList.size()<<endl;
-        //toNode->heartbeat = toNode->heartbeat + 1;
-
-        //updating the current node heartbeat in the membership list
-        int size_list = toNode->memberList.size();
-        cout<<"Size of the toNode->list = "<<size_list<<"\n";
-        for(toNode->myPos = toNode->memberList.begin(); toNode->myPos != toNode->memberList.end(); toNode->myPos++){
-            if (toNode->myPos->id == toNode->addr.addr[0] && toNode->myPos->port == toNode->addr.addr[4]){
-                toNode->myPos->setheartbeat(toNode->heartbeat); 
-                toNode->myPos->settimestamp(par->getcurrtime()); 
-            }
-        }
-        
-        //we are having dummymessage in another funcion
-    /*
-        for(toNode->myPos = toNode->memberList.begin(); toNode->myPos != toNode->memberList.end(); toNode->myPos++){
-          //send heartbeat to the memberlist
-          //creating dummymessage with heartbeat
-          MessageHdr *dummymsg;
-          size_t dummysize =  sizeof(MessageHdr) + sizeof(toNode->addr.addr) + sizeof(long) + sizeof(toNode->memberList[0]);
-          dummymsg = (MessageHdr *)malloc(dummysize * sizeof(char));
-          dummymsg->msgType = DUMMYLASTMSGTYPE;
-          memcpy((char *)(dummymsg + 1), &toNode->addr.addr, sizeof(toNode->addr.addr));
-          memcpy((char *)(dummymsg + 1 + sizeof(toNode->addr.addr)), &toNode->heartbeat, sizeof(long));
-          memcpy((char *)(dummymsg + 1) + sizeof(toNode->addr.addr) + sizeof(long), &toNode->myPos, sizeof(toNode->memberList[0]));
-        }
-    */
-    cout<<"\n";
-    cout<<"\n";
+        cout<<"\n";
+        cout<<"\n";
+        log->logNodeAdd((Address *)(&tempaddr), (Address *)(&toNode->addr));
+        //Address naddr = getNodeAddress(newlist->id, newlist->port);
+        //log->logNodeAdd((Address *)(&toNode->addr), (Address *)(&naddr));
     }
         
         //dummy message
     if (msg->msgType == DUMMYLASTMSGTYPE){
-            
+        int found_heartbeat = 0;
         //toNode = (Member *)env; //n:0
         //increasing its own heartbeat
-        toNode->heartbeat = toNode->heartbeat + 1;
+        //toNode->heartbeat = toNode->heartbeat + 1;
         cout<<"dummymsg : env address = "<<toNode->addr.getAddress()<<endl;
         memcpy(&fromNode->addr.addr, data + sizeof(MessageHdr), sizeof(fromNode->addr.addr));
         cout<<"dummymsg : from Node Address = "<<fromNode->addr.getAddress()<<endl;
         memcpy(&fromNode->heartbeat, data + sizeof(MessageHdr) + sizeof(fromNode->addr.addr) + 1, sizeof(long));
-        cout<<"dummymsg : from Node Address = "<<fromNode->heartbeat<<endl;
+        cout<<"dummymsg : from Node heartbeat = "<<fromNode->heartbeat<<endl;
 
-        MemberListEntry *newEntry;
-        memcpy(&newEntry,data + sizeof(MessageHdr) + sizeof(toNode->addr.addr) + 1 + sizeof(long), sizeof(newEntry));
+        MemberListEntry *newEntry = new MemberListEntry;
+        memcpy(&newEntry->id,(data + sizeof(MessageHdr) + sizeof(toNode->addr.addr) + 1 + sizeof(long)), sizeof(int));
+        memcpy(&newEntry->port,(data + sizeof(MessageHdr) + sizeof(toNode->addr.addr) + 1 + sizeof(long) + sizeof(int)), sizeof(short));
+        memcpy(&newEntry->heartbeat,(data + sizeof(MessageHdr) + sizeof(toNode->addr.addr) + 1 + sizeof(long) + sizeof(int) + sizeof(short)), sizeof(long));
+        memcpy(&newEntry->timestamp,(data + sizeof(MessageHdr) + sizeof(toNode->addr.addr) + 1 + sizeof(long) + sizeof(int) + sizeof(short) + sizeof(long)), sizeof(long));
 
         //adding timestamp 
+        cout<<"dummymsg : size of list = "<<toNode->memberList.size()<<"\n";
         for(toNode->myPos = toNode->memberList.begin(); toNode->myPos != toNode->memberList.end(); toNode->myPos++){              
-            Address *timestamp_addr;
-            timestamp_addr->addr[0] = toNode->myPos->id;
-            timestamp_addr->addr[4] = toNode->myPos->port;
+            Address *timestamp_addr = new Address;
+            memcpy(&timestamp_addr->addr[0] , &toNode->myPos->id, sizeof(int));
+            memcpy(&timestamp_addr->addr[4] , &toNode->myPos->port, sizeof(short));
+            //cout<<"dummymsg : toNode->myPos->addr = "<<printAddress(timestamp_addr)<<"\n";
+            cout<<"dummymsg : timestamp_addr = ";
+            printAddress(timestamp_addr);
+            cout<<"dummymsg : fromNode->addr";
+            printAddress(&fromNode->addr);
+
             if (*timestamp_addr == fromNode->addr){
+                found_heartbeat =  1;
+                //log->logNodeAdd((Address *)(&toNode->addr), (Address *)(&fromNode->addr));
+                cout<<"dummymsg : fromNode heartbeat increase\n";
               if (fromNode->heartbeat > toNode->myPos->heartbeat){
+                    //cout<<"increasing fromNode heartbeat\n";
+                    log->logNodeAdd((Address *)(&toNode->addr), (Address *)(&fromNode->addr));
+                    
                     toNode->myPos->setheartbeat(fromNode->heartbeat); 
                     toNode->myPos->settimestamp(par->getcurrtime());
               }  
             } else if (*timestamp_addr == toNode->addr) {
                     //increasing its own heartbeat
-                    toNode->myPos->setheartbeat(toNode->heartbeat);
-                    toNode->myPos->settimestamp(par->getcurrtime());
-                    toNode->timeOutCounter = 0;
+                    //cout<<"increasing toNode heartbeat\n";
+                    //printAddress(timestamp_addr);
+                    //toNode->myPos->setheartbeat(toNode->heartbeat);
+                    //toNode->myPos->settimestamp(par->getcurrtime());
+                    //toNode->timeOutCounter = 0;
             } else {
                     //increase the timeout counter
                     toNode->timeOutCounter = toNode->timeOutCounter + 1;
             }
+            //checking the newentry membershiplist heartbeat
+            if (toNode->myPos->id == newEntry->id && toNode->myPos->port == newEntry->port){
+                //membershiplist of the fromNode and toNode comparison
+                if (newEntry->heartbeat > toNode->myPos->heartbeat ){
+                    toNode->myPos->setheartbeat(newEntry->heartbeat); 
+                    toNode->myPos->settimestamp(par->getcurrtime());    
+                }
+            }
+        }
+        //not found in the list . add it with hearbeat
+        if (!found_heartbeat){
+            cout<<"dummymsg : creating new entry for node\n";
+            printAddress(&fromNode->addr);
+            MemberListEntry *newlist = new MemberListEntry;
+            memcpy(&newlist->id, &fromNode->addr.addr[0], sizeof(int));
+            memcpy(&newlist->port,&fromNode->addr.addr[4], sizeof(short));
+            newlist->heartbeat = fromNode->heartbeat;
+            newlist->timestamp = par->getcurrtime();
+            toNode->memberList.push_back(*newlist);
+            log->logNodeAdd((Address *)(&toNode->addr), (Address *)(&fromNode->addr));
         }
     }
 
     if (msg->msgType == RETIRENODE){
-        Address retireaddr;
+        cout<<"In RETIRENODE\n";
+        //cout<<"toNode->memberList.size() = "<<toNode->memberList.size()<<"\n";
+        cout<<"RETIRENODE : this node =";
+        printAddress(&toNode->addr);
+        Address *retireaddr = new Address;
         memcpy(&id, data + sizeof(MessageHdr), sizeof(int));
         memcpy(&port, data + sizeof(MessageHdr) + sizeof(int), sizeof(short));
-        memcpy(&retireaddr.addr, data + sizeof(MessageHdr), sizeof(retireaddr.addr));
+        memcpy(&retireaddr->addr, data + sizeof(MessageHdr), sizeof(retireaddr->addr));
+        cout<<"RETIRENODE : failing node = ";
+        printAddress(retireaddr);
+        cout<<id<<":"<<port<<"\n";
+        //if(!toNode->bFailed && toNode->heartbeat != 0){
+        //    log->logNodeRemove((Address *)(&toNode->addr), retireaddr);
+        //}
+
         //retireaddr->addr[0] = id;
         //retireaddr->addr[4] = port;
         //checking if the current node is the retired node
-        if (toNode->addr == retireaddr){
-            //fail the node
-            toNode->bFailed   = true;
-            toNode->inited    = false;
-            toNode->inGroup   = false;
-            toNode->heartbeat = 0;
-        } else{
-            //check if the toNode is part of the memberList and delete it
-            for(toNode->myPos = toNode->memberList.begin(); toNode->myPos != toNode->memberList.end(); toNode->myPos++){
-                 if (toNode->myPos->id == id && toNode->myPos->port == port){
-                    //delete the list item
-                    toNode->memberList.erase(toNode->myPos);
-                }
-            }
-            //forward the list to other nodes
-            MessageHdr *retiremsg;
-            for(toNode->myPos = toNode->memberList.begin(); toNode->myPos != toNode->memberList.end(); toNode->myPos++){
-                size_t retiresize =  sizeof(MessageHdr) + sizeof(retireaddr.addr) + sizeof(toNode->memberList[0]);
-                retiremsg = (MessageHdr *)malloc(retiresize * sizeof(char));
-                retiremsg->msgType = RETIRENODE;
-                memcpy((char *)(retiremsg + 1), retireaddr.addr, sizeof(retireaddr.addr));
-                memcpy((char *)(retiremsg + 1) + sizeof(retireaddr.addr), &toNode->myPos, sizeof(toNode->memberList[0]));
-                //select n elements
-                int maxsize = toNode->memberList.size();
-                cout<<"maxsize of the random variable = "<<maxsize;
-                for(int i=0;i<maxsize / 2; i++){
-                    int ran_var = rand() % maxsize;
-                    //creating address from the membership list entry of ran_var
-                    id = toNode->memberList[ran_var].id;
-                    port = toNode->memberList[ran_var].port;
-                    Address *newaddr;
-                    newaddr->addr[0] = id;
-                    newaddr->addr[4] = port;
-                    cout<<"RETIRENODE : new address = "<<newaddr->getAddress();
-                    emulNet->ENsend(newaddr,&toNode->addr, (char *)retiremsg, retiresize);                
+        if(!toNode->bFailed && toNode->heartbeat != 10000){
+            if (toNode->addr == *retireaddr){
+                //fail the node
+                cout<<"RETIRENODE : failing node =";
+                printAddress(&toNode->addr);
+                //log->logNodeRemove((Address *)(&toNode->addr), retireaddr);
+                toNode->bFailed   = true;
+                //toNode->inited    = false;
+                toNode->inGroup   = false;
+                toNode->heartbeat = 10000;
+            } else{
+                //check if the toNode is part of the memberList and delete it
+                for(toNode->myPos = toNode->memberList.begin(); toNode->myPos != toNode->memberList.end(); toNode->myPos++){
+                    cout<<"RETIRENODE : list address = "<<toNode->myPos->id<<":"<<toNode->myPos->port<<"\n";
+                     if (toNode->myPos->id == id && toNode->myPos->port == port && toNode->myPos->heartbeat < 10000){
+                        //delete the list item
+                        cout<<"deleting node"<<id<<":"<<port<<"\n";
+                        toNode->myPos->setheartbeat(10000);
+                        toNode->myPos->settimestamp(par->getcurrtime());
+                        //Address *raddr = new Address;
+                        //(Address)raddr->addr = getNodeAddress(id, port);
+                        //printAddress(raddr);
+                        log->LOG(retireaddr, "RETIRENODE : retiring this address");
+                        log->logNodeRemove((Address *)(&toNode->addr), retireaddr);
+                        //if (memberNode->myPos != memberNode->memberList.end())
+                            //toNode->memberList.erase(toNode->myPos);
+                        //else 
+                            //toNode->myPos++;
+                    }
                 }
             }
         }
@@ -570,49 +621,90 @@ void MP1Node::nodeLoopOps() {
      * Your code goes here
      */
     //to check for the mpNode memberlist anymember has not responded within a timeperiod.
-    MessageHdr *retiremsg;
+    //if (!memberNode->bFailed)
+    //    send_heartbeat();
+
+    cout<<"Retiring Node in nodeLoopOps\n";
+    int maxsize = memberNode->memberList.size();
     for(memberNode->myPos = memberNode->memberList.begin(); memberNode->myPos != memberNode->memberList.end(); memberNode->myPos++){
-        if ((par->getcurrtime() - memberNode->myPos->timestamp) == TFAIL){
-            //failing the node 
+        cout<<"NODELOOP : memberlist contencts id = "<<memberNode->myPos->id<<":";
+        cout<<memberNode->myPos->port<<"\n";
+    }
+    cout<<"NODELOOP : size before retire = "<<maxsize<<endl;
+            
+    //cout<<"memberNode->memberList.capacity() = "<<memberNode->memberList.capacity()<<"\n";
+    MessageHdr *retiremsg = new MessageHdr;
+    if (!memberNode->bFailed && memberNode->heartbeat < 10000){
+        for(memberNode->myPos = memberNode->memberList.begin(); memberNode->myPos != memberNode->memberList.end(); memberNode->myPos++){
+            if ((par->getcurrtime() - memberNode->myPos->timestamp) == TFAIL){
+                //failing the node 
+                //memberNode->myPos
+            }
+            //cout<<"nodeLoopOps : timecounter = "<<(par->getcurrtime() - memberNode->myPos->timestamp)<<"\n";
+            cout<<"NODELOOP : memberNode->addr = "<<memberNode->addr.getAddress()<<"\n";
+            //cout<<"TFAIL = "<<TFAIL<<"\n";
+            cout<<"NODELOOP : memberNode->myPos->id = "<<memberNode->myPos->id<<"\n";
+            cout<<"NODELOOP : memberNode->myPos->port = "<<memberNode->myPos->port<<"\n";
+            cout<<"NODELOOP : memberNode->myPos->timestamp = "<<memberNode->myPos->timestamp<<"\n";
+            cout<<"NODELOOP : par->getcurrtime() = "<<par->getcurrtime()<<"\n";
+            if ((par->getcurrtime() - memberNode->myPos->timestamp) == TREMOVE && memberNode->myPos->heartbeat < 10000 && memberNode->inGroup){
+                
+                //memberNode->myPos->heartbeat = 10000;
+                //select n elements
+                Address *raddr = new Address;
 
-            //memberNode->myPos
-        }
-        if ((par->getcurrtime() - memberNode->myPos->timestamp) == TREMOVE){
-            //select n elements
-            int maxsize = memberNode->memberList.size();
-            
-            Address *retireaddr;
-            int id     = memberNode->myPos->id;
-            short port = memberNode->myPos->port;
-            retireaddr->addr[0] = id;
-            retireaddr->addr[4] = port;
-            
-            //removing the node from the memberNode memberList
-           
-
-            
-            size_t retiresize =  sizeof(MessageHdr) + sizeof(retireaddr->addr) + sizeof(memberNode->memberList[0]);
-            retiremsg = (MessageHdr *)malloc(retiresize * sizeof(char));
-            retiremsg->msgType = RETIRENODE;
-            memcpy((char *)(retiremsg + 1), &retireaddr->addr, sizeof(retireaddr->addr));
-            memcpy((char *)(retiremsg + 1) + sizeof(retireaddr->addr) + 1, &memberNode->myPos, sizeof(memberNode->memberList[0]));
-            //erase the node
-            memberNode->memberList.erase(memberNode->myPos);
-            cout<<"maxsize of the random variable = "<<maxsize;
-            //propogate to random members in the list
-            for(int i=0;i<maxsize / 2; i++){
-                int ran_var = rand() % maxsize;
-                //creating address from the membership list entry of ran_var
-                id = memberNode->memberList[ran_var].id;
-                port = memberNode->memberList[ran_var].port;
-                Address *newaddr;
-                newaddr->addr[0] = id;
-                newaddr->addr[4] = port;
-                cout<<"RETIRENODE : new address = "<<newaddr->getAddress();
-                emulNet->ENsend(newaddr,&memberNode->addr, (char *)retiremsg, retiresize);
+                //raddr = getNodeAddress(memberNode->myPos->id, memberNode->myPos->port);
+                //log->logNodeRemove((Address *)(&memberNode->addr), );
+                maxsize = memberNode->memberList.size();
+                cout<<"NODELOOP : creatine RETIREMESSAGE\n";
+                cout<<"NODELOOP : maxsize = "<<maxsize<<"\n";
+                Address *retireaddr = new Address;
+                int id     = memberNode->myPos->id;
+                short port = memberNode->myPos->port;
+                retireaddr->addr[0] = id;
+                retireaddr->addr[4] = port;
+                cout<<"Printing retireaddr = ";
+                printAddress(retireaddr);
+                //log->logNodeRemove((Address *)(&memberNode->addr), retireaddr);
+                cout<<"NODELOOP : "<<id<<":"<<port<<"\n";
+                //removing the node from the memberNode memberList
+                size_t retiresize =  sizeof(MessageHdr) + sizeof(retireaddr->addr) + sizeof(int) + sizeof(short) + sizeof(long) + sizeof(long) + 1;
+                retiremsg = (MessageHdr *)malloc(retiresize * sizeof(char));
+                retiremsg->msgType = RETIRENODE;
+                //memcpy((char *)(retiremsg + 1), &retireaddr->addr, sizeof(retireaddr->addr));
+                memcpy((char *)(retiremsg + 1), &id, sizeof(int));
+                memcpy((char *)(retiremsg + 1) + sizeof(int), &port, sizeof(short));
+                memcpy((char *)(retiremsg + 1) + sizeof(retireaddr->addr) + 1, &(memberNode->myPos->id), sizeof(int));
+                memcpy((char *)(retiremsg + 1) + sizeof(retireaddr->addr) + 1 + sizeof(int), &(memberNode->myPos->port), sizeof(short));
+                memcpy((char *)(retiremsg + 1) + sizeof(retireaddr->addr) + 1 + sizeof(int) + sizeof(short), &(memberNode->myPos->heartbeat), sizeof(long));
+                memcpy((char *)(retiremsg + 1) + sizeof(retireaddr->addr) + 1 + sizeof(int) + sizeof(short) + sizeof(long), &(memberNode->myPos->timestamp), sizeof(long));
+                cout<<"NODELOOP : erasing node\n";
+                //erase the node
+                //if (memberNode->myPos != memberNode->memberList.end())
+                //    memberNode->memberList.erase(memberNode->myPos);
+                maxsize = memberNode->memberList.size();
+                cout<<"NODELOOP : maxsize of the random variable = "<<maxsize<<"\n";;
+                for(int i=0;i<maxsize; i++){
+                    int ran_var = rand() % maxsize;
+                    cout<<"ran_var = "<<ran_var<<"\n";
+                    //creating address from the membership list entry of ran_var
+                    //propogate to random members in the list
+                    id = memberNode->memberList[i].id;
+                    port = memberNode->memberList[i].port;
+                    Address *newaddr = new Address;
+                    memcpy(&(newaddr->addr[0]), &id, sizeof(int));
+                    memcpy(&(newaddr->addr[4]), &port, sizeof(short));
+                    //if (*newaddr == memberNode->addr)
+                    //    continue;
+                    cout<<"NODELOOP : new address = "<<newaddr->getAddress()<<"\n";
+                    //if (newaddr)
+                    emulNet->ENsend(&memberNode->addr, newaddr, (char *)retiremsg, retiresize);
+                }
             }
         }
     }
+    cout<<"\n";
+    cout<<"\n";
 
     return;
 }
@@ -659,4 +751,15 @@ void MP1Node::printAddress(Address *addr)
 {
     printf("%d.%d.%d.%d:%d \n",  addr->addr[0],addr->addr[1],addr->addr[2],
                                                        addr->addr[3], *(short*)&addr->addr[4]) ;    
+}
+
+
+Address MP1Node::getNodeAddress(int id, short port) {
+    Address nodeaddr;
+
+    //memset(nodeaddr, 0, sizeof(Address));
+    *(int*)(nodeaddr.addr) = id;
+    *(short*)(nodeaddr.addr[4]) = port;
+
+    return nodeaddr;
 }
